@@ -1,0 +1,6 @@
+1. Criar esta tabela 
+
+CREATE TABLE `quiz`.`wquiz_rules` 
+(`id_rule` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT, `rule_description` TEXT, PRIMARY KEY(`id_rule`), INDEX(`id_rule`)) TYPE = InnoDB; 
+
+2. 

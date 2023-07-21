@@ -1,0 +1,12 @@
+/* CSS file */
+Label { font-family: Helvetica; font-size: 14pt; color: #333; }
+.myLabel { font-family: Helvetica; font-size: 18pt; color: #aaa; }
+TextArea { font-family: Helvetica; font-size: 12pt }
+.myQuestion { font-family: Helvetica; font-size: 14pt; color: blue; }
+ToolTip {
+	fontFamily: "Arial";
+	fontSize: 12;
+	/*fontStyle: "italic"; */
+	color: #fff;
+	backgroundColor: #666;
+}

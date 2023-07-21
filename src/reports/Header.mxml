@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<PrintComponent xmlns="libs.reports.org.print.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="400" 
+	height="78">
+  
+    <mx:Script>
+    	<![CDATA[
+
+		    [Bindable]
+		    public var title:String = "Quiz Bíblico";
+    		[Bindable]
+    		[Embed(source="/assets/titulo.png")] 
+		    public var logo:Class;
+
+    	]]>
+    </mx:Script>
+	
+	<mx:Label text="4ieq.com" color="#000000" fontWeight="bold" fontSize="16" top="0" left="0"/>
+	<mx:Label text="Página: {pageNumber}" fontSize="12" right="0" top="0"/>
+	<mx:Image x="0" y="23" source="{logo}"/>
+	<mx:Label text="{title}" color="#000000" fontWeight="bold" fontSize="12" top="32" left="47"/>
+	<mx:Label text="{date} as {time}" color="#000000" fontWeight="normal" fontSize="12" top="51" left="47"/>
+</PrintComponent>
+

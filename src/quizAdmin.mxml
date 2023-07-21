@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+    
+    <mx:Script source="jr/borba/waldir/asFiles/quizadmin.as"/>
+    <mx:Button x="10" y="10" label="Entrar" click="{currentState='Main'}" id="button1"/>
+    
+	<mx:states>
+		<mx:State name="Main">
+			<mx:AddChild position="lastChild">
+				<mx:ApplicationControlBar x="0" y="0" width="100%" height="34">
+					<mx:Button/>
+					<mx:Button/>
+					<mx:Button/>
+					<mx:Button/>
+					<mx:Button/>
+					<mx:Button/>
+					<mx:Button/>
+				</mx:ApplicationControlBar>
+			</mx:AddChild>
+			<mx:SetProperty name="width" value="982"/>
+			<mx:SetProperty name="height" value="714"/>
+			<mx:RemoveChild target="{button1}"/>
+			<mx:AddChild position="lastChild">
+				<mx:Accordion width="100%" height="659" x="0" y="45" id="acdControl" >
+					<mx:Canvas label="Quiz" width="100%" height="100%">
+						<mx:Button label="Alterar Quiz" id="btChangeQuiz" click="{saveChange(dbQuiz.selectedItem.id, 'quiz');}" x="556" y="208"/>
+						<mx:DataGrid x="10" y="41" width="960" height="159" id="dbQuiz" change="{lookupQuestion(dbQuiz.selectedItem.id);}" >
+							<mx:columns>
+								<mx:DataGridColumn headerText="ID" dataField="id" visible="false"/>
+								<mx:DataGridColumn headerText="Quiz" editable="true" dataField="description" />
+								<mx:DataGridColumn headerText="Ativo" editable="true" dataField="ativo" width="40"/>
+							</mx:columns>
+						</mx:DataGrid>
+						<mx:Button label="Alterar Pergunta" id="btChangeQuestion" click="{saveChange(dbQuestions.selectedItem.id, 'question');}" x="10" y="524"/>
+						<mx:DataGrid x="10" y="262" width="403" height="224" id="dbQuestions" change="{lookupAnwswer(dbQuestions.selectedItem.id);}">
+							<mx:columns>
+								<mx:DataGridColumn headerText="ID" dataField="id" visible="false"/>
+								<mx:DataGridColumn headerText="Perguntas" dataField="description"/>
+							</mx:columns>
+						</mx:DataGrid>
+						<mx:Button label="Alterar Resposta" id="btChangeAnswer" click="{saveChange(dgAnswers.selectedItem.id, 'answer');}" x="534" y="524"/>
+						<mx:DataGrid x="541" y="262" width="429" height="224" id="dgAnswers">
+							<mx:columns>
+								<mx:DataGridColumn headerText="ID" dataField="id" visible="false"/>
+								<mx:DataGridColumn headerText="Respostas" dataField="description"/>
+								<mx:DataGridColumn headerText="Correta" dataField="correct" width="60"/>
+							</mx:columns>
+						</mx:DataGrid>
+						<mx:TextInput x="10" y="208" width="516" text="{dbQuiz.selectedItem.description}" id="tiQuiz"/>
+						<mx:CheckBox x="534" y="210" id="cbQuizEnable"/>
+						<mx:TextInput x="10" y="494" width="403" text="{dbQuestions.selectedItem.description}" id="tiQuestion"/>
+						<mx:TextInput x="534" y="494" width="407" text="{dgAnswers.selectedItem.description}" id="tiAnswer"/>
+						<mx:CheckBox x="956" y="496" id="cbAnswerValid"/>
+						<mx:Button label="Carregar Dados" click="{loadQuiz()}" x="10" y="10" id="btLoadQuiz"/>
+						<mx:Button x="887" y="208" label="Novo Quiz" id="btNewQuiz" click="{newQuiz();}"/>
+						<mx:Button x="302" y="524" label="Nova Pergunta" id="btNewQuestion" click="{newQuestion();}"/>
+						<mx:Button x="859" y="524" label="Nova Resposta" id="btNewAnswer" click="{newAnswer();}"/>
+						<mx:TitleWindow x="151" y="88" width="678" height="458" layout="absolute" id="twNew" title="Novo Cadastro" visible="false">
+							<mx:Button x="511" y="347" label="Gravar Dados" width="137" height="61" id="btSaveData" click="{SaveData();}"/>
+							<mx:Label x="23" y="89" text="newLBQuiz" id="newLBQuiz"/>
+							<mx:TextInput x="23" y="115" width="612" id="tiNewQuiz"/>
+							<mx:Label x="23" y="145" text="newLBQuestion" id="newLBQuestion"/>
+							<mx:TextInput x="23" y="171" width="612" id="tiNewQuestion"/>
+							<mx:Label x="23" y="201" text="newLBAnswer" id="newLBAnswer"/>
+							<mx:TextInput x="23" y="227" width="612" id="tiNewAnswer"/>
+						</mx:TitleWindow>
+					</mx:Canvas>
+					<mx:Canvas label="Ranking" width="100%" height="100%">
+						<mx:DataGrid x="10" y="228" width="960" height="357" id="dgRanking">
+							<mx:columns>
+								<mx:DataGridColumn headerText="Nome" dataField="name"/>
+								<mx:DataGridColumn headerText="Pontos" dataField="points" width="100"/>
+								<mx:DataGridColumn headerText="Tempo Total" dataField="totaltime" width="100"/>
+							</mx:columns>
+						</mx:DataGrid>
+						<mx:Button label="Carregar Dados" click="{loadQuiz2()}" x="10" y="10" id="btLoadRanking"/>
+						<mx:DataGrid x="10" y="41" width="960" height="159" id="dgQuiz" change="{loadRanking(dgQuiz.selectedItem.id);}" >
+							<mx:columns>
+								<mx:DataGridColumn headerText="ID" dataField="id" visible="false"/>
+								<mx:DataGridColumn headerText="Quiz" editable="true" dataField="description" />
+								<mx:DataGridColumn headerText="Ativo" editable="true" dataField="ativo" width="40"/>
+							</mx:columns>
+						</mx:DataGrid>
+					</mx:Canvas>
+					<mx:Canvas label="Jogadores" width="100%" height="100%">
+						<mx:DataGrid x="10" y="40" width="882" height="399" id="dgPlayers">
+							<mx:columns>
+								<mx:DataGridColumn headerText="ID" dataField="id" visible="false"/>
+								<mx:DataGridColumn headerText="Nome" dataField="description"/>
+								<mx:DataGridColumn headerText="Fone" dataField="phone"/>
+								<mx:DataGridColumn headerText="e-Mail" dataField="mail"/>
+							</mx:columns>
+						</mx:DataGrid>
+						<mx:Button label="Carregar Dados" click="{loadPlayers()}" x="10" y="10" id="btLoadPlayers"/>
+					</mx:Canvas>
+					<mx:Canvas label="Regulamento" width="100%" height="100%">
+						<mx:RichTextEditor x="10" y="40" title="Manutenção de Regulamento do Quiz" width="960" height="453" id="taRules">
+						</mx:RichTextEditor>
+						<mx:Button x="10" y="10" label="Carregar Dados" click="{loadRules();}"/>
+						<mx:Button x="10" y="519" label="Salvar Regulamento" click="{updateRule();}"/>
+						<mx:Label x="133" y="12" id="lblRuleID" visible="true"/>
+					</mx:Canvas>
+				</mx:Accordion>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+</mx:Application>

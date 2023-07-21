@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+
+    <!-- HTTP Server - Get information from Database -->
+	<mx:HTTPService 
+		resultFormat="e4x" 
+		id="listTipoSolicitacao" 
+		showBusyCursor="true" 
+		url="php/GetListTipoSolicitacao.php" 
+		method="POST" 
+		fault="falhouHTTP(event);" 
+		result="resultadoHTTP(event.result);">
+        <mx:request>
+            <cd_tipo_solicitacao>{cd_tipo_solicitacao.text}</cd_tipo_solicitacao>
+            <ds_tipo_solicitacao>{ds_tipo_solicitacao.text.toUpperCase()}</ds_tipo_solicitacao>
+        </mx:request>
+    </mx:HTTPService>
+
+    <mx:Script>
+    	<![CDATA[
+			import mx.rpc.events.FaultEvent;
+			import mx.controls.Alert;
+			import reports.ReportPreview;
+			import reports.rListagem; 
+			import mx.containers.Box;	
+			import mx.managers.PopUpManager;
+
+    		/** responsavel por mostrar o erro, caso ocorra no HTTP server **/
+			private function falhouHTTP(faultEvent:FaultEvent):void {
+					Alert.show('Requisição falhou: [' + faultEvent.fault.faultCode + '=' + faultEvent.fault.name + ']','Erro');
+			}
+
+			/** preenche a grid com o resultado XML do HTTP server **/
+			private function resultadoHTTP(resultObject:Object):void {
+
+				for each (var message:String in resultObject.message_text) {
+			        /** atualiza status **/
+			        gridStatus.text = message + " registro(s) retornados...";
+				}
+			}
+			
+			/** Imprime relatório de listagem **/
+			private function executaRelatorio():void{
+			
+			   var titleW:Box = Box(PopUpManager.createPopUp(this,Box,true));
+			   // Objeto de Previsualização do Laudo
+			   var report:ReportPreview = new ReportPreview();
+			   // Nosso relatório
+			   var listagem:rListagem = new rListagem();
+			   
+			   // Popup
+			   titleW.width = Application.application.width;
+			   titleW.height = Application.application.height;
+			   report.width = titleW.width;
+			   report.height = titleW.height;
+			
+			   titleW.addChild(report);
+			   report.addChild(listagem);
+			
+			   // Atibuindo as informações da Grid para a Grid 
+			   // do nosso Relatório
+			   listagem.grid.dataProvider = grid.dataProvider;
+			   listagem.grid.columns = grid.columns;
+			   listagem.header.title = "Relatório: Listagem de Tipos de Solicitação";
+			      
+			   report.execute(listagem);   
+			}
+
+    	]]>
+    </mx:Script>
+
+
+	<mx:DataGrid dataProvider="{listTipoSolicitacao.lastResult.tipo_solicitacao}" x="10" y="57" width="447" height="193" id="grid">
+		<mx:columns>
+  	  	    <mx:DataGridColumn visible="true" headerText="Código" dataField="cd_tipo_solicitacao" width="80"/>
+			<mx:DataGridColumn visible="true" headerText="Descrição" dataField="ds_tipo_solicitacao"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:Button x="379" y="27" label="Atualizar" id="btnAtualizar" click="listTipoSolicitacao.send()"/>
+	<mx:Button x="10" y="284" label="Visualizar relatório" id="btnPreview" click="executaRelatorio();"/>
+	<mx:TextInput x="10" y="27" width="83" id="cd_tipo_solicitacao"/>
+	<mx:TextInput x="101" y="27" width="270" id="ds_tipo_solicitacao"/>
+	<mx:Label x="10" y="10" text="Código" width="83"/>
+	<mx:Label x="10" y="258" width="447" id="gridStatus"/>
+	<mx:Label x="101" y="10" text="Descrição" width="270"/>
+	
+</mx:Application>

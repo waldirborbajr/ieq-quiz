@@ -1,0 +1,35 @@
+[Diagram properties]
+SQL=""SELECT "#13#10"  `quiz`.id_quiz,"#13#10"  `question`.id_question,"#13#10"  `question`.question,"#13#10"  `answer`.id_answer,"#13#10"  `answer`.answer,"#13#10"  `answer`.correct"#13#10"FROM"#13#10"  `quiz`"#13#10"  INNER JOIN `question` ON (`quiz`.id_quiz = `question`.id_quiz)"#13#10"  INNER JOIN `answer` ON (`question`.id_question = `answer`.id_question)"#13#10"GROUP BY"#13#10"  `answer`.id_answer,"#13#10"  `answer`.answer,"#13#10"  `answer`.correct,"#13#10"  question,"#13#10"  id_question,"#13#10"  id_quiz"#13#10"""
+[Query 1: `question`]
+Left=219
+Top=147
+Height=78
+Width=123
+[Query 1: `answer`]
+Left=399
+Top=68
+Height=95
+Width=115
+[Query 1: `quiz`]
+Left=60
+Top=41
+Height=61
+Width=101
+[Query 1: `quiz`_id_quiz-`question`_id_quiz]
+PointX0=161
+PointY0=70
+PointX1=171
+PointY1=70
+PointX2=209
+PointY2=210
+PointX3=219
+PointY3=210
+[Query 1: `question`_id_question-`answer`_id_question]
+PointX0=342
+PointY0=176
+PointX1=352
+PointY1=176
+PointX2=389
+PointY2=114
+PointX3=399
+PointY3=114

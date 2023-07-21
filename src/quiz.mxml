@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	width="775" 
+	height="605" 
+	creationComplete="onInit()" 
+	xmlns:util="jr.borba.waldir.component.*"  
+	backgroundGradientAlphas="[1.0, 1.0]" 
+	backgroundGradientColors="[#3F484A, #3F484A]"
+	preloader="jr.borba.waldir.preloader.Preloader">
+
+   	<mx:Script source="jr/borba/waldir/asFiles/quiz.as"/>
+
+   	<mx:Style source="css/quiz.css" >
+   	</mx:Style>
+	
+	<mx:states>
+		<mx:State name="newUser">
+			<mx:AddChild position="lastChild">
+				<mx:Label x="235.25" y="263" text="Nome *" color="#83B1D4" id="label2" fontWeight="bold"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="232.25" y="293" text="e-Mail *" color="#83B1D4" fontWeight="bold"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="303.25" y="293" width="241" id="txEmail" tabIndex="1"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="154.25" y="232" text="Novo Cadastro" fontWeight="bold" color="#5994C2" fontSize="16"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="213.25" y="323" text="Telefone *" color="#83B1D4" fontWeight="bold"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="303.25" y="323" width="241" id="txPhone" tabIndex="2"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="303.25" y="263" width="241.5" id="txName" tabIndex="0"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="234.75" y="518" width="305.5" id="lblResult" fontWeight="bold" color="#F7F9F9"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="231.25" y="353" text="Senha *" color="#83B1D4" fontWeight="bold"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="211.25" y="382" text="Re-digite *" color="#83B1D4" fontWeight="bold"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="303.25" y="353" width="241" id="txPassword" displayAsPassword="true" tabIndex="3"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="302.75" y="383" width="241.5" id="txConfirm" displayAsPassword="true" tabIndex="4"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Image x="231.25" y="445" id="btAdd" source="assets/cadastrar.png"
+					click="{addPerson()}"
+					buttonMode="true" 
+					rollOverEffect="{rollOverEffect}" 
+					rollOutEffect="{rollOutEffect}" 
+					mouseOver="{iconMoveDown(btAdd)}" 
+					mouseOut="{iconMoveUp(btAdd)}"
+					mouseDown="{iconMD(btAdd)}" 
+					mouseUp="{iconMU(btAdd)}" 
+				/>
+			</mx:AddChild>
+			<mx:RemoveChild target="{taRules}"/>
+			<mx:RemoveChild target="{btPlay}"/>
+			<mx:RemoveChild target="{btAddPlayer}"/>
+		</mx:State>
+		<mx:State name="doQuiz">
+			<mx:AddChild position="lastChild">
+				<mx:Form x="151" y="245" width="477" height="247" id="idquizForm">
+					<mx:Tile direction="vertical" height="100%" width="100%">
+						<mx:RadioButtonGroup id="rgAnswers" itemClick="rgClick(event)"/>
+						<mx:Repeater id="rp">
+							<mx:RadioButton groupName="rgAnswers" value="{rp.currentItem.@id}" label="{rp.currentItem.@value}" fontWeight="bold" color="#FFFFFF" fontSize="14"/>	
+						</mx:Repeater>
+					</mx:Tile>
+				</mx:Form>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Text x="151" y="204" width="477" height="33" id="sQuestion" fontWeight="bold" fontSize="20" styleName="myQuestion" color="#FFFFFF"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label id="lbQuiz" fontWeight="bold" width="346" visible="true" x="253" y="179" height="16"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label id="panQuiz" x="639" y="500" fontWeight="bold" color="#FFFFFF" width="81" textAlign="center"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{image1}" position="before">
+				<mx:Image id="btNext0" x="490" y="516" source="assets/botquestao.png" toolTip="Próxima Questão" 
+					visible="false"
+					buttonMode="true" 
+					click="{showQuiz()}" 
+					rollOverEffect="{rollOverEffect}" 
+					rollOutEffect="{rollOutEffect}" 
+					mouseOver="{iconMoveDown(btNext)}" 
+					mouseOut="{iconMoveUp(btNext)}"
+					mouseDown="{iconMD(btNext)}" 
+					mouseUp="{iconMU(btNext)}" />
+			</mx:AddChild>
+			<mx:RemoveChild target="{taRules}"/>
+			<mx:RemoveChild target="{btBack}"/>
+			<mx:AddChild position="lastChild">
+				<mx:Image x="65" y="323" source="assets/botvoltar.png" id="btBackQuiz" 
+					visible="false"
+					buttonMode="true" 
+					click="{sendLogin()}" 
+					rollOverEffect="{rollOverEffect}" 
+					rollOutEffect="{rollOutEffect}" 
+					mouseOver="{iconMoveDown(btBackQuiz)}" 
+					mouseOut="{iconMoveUp(btBackQuiz)}"
+					mouseDown="{iconMD(btBackQuiz)}" 
+					mouseUp="{iconMU(btBackQuiz)}"
+				/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Image x="490" y="516" source="assets/botquestao.png" id="btNext"
+					visible="false"
+					buttonMode="true" 
+					click="{showQuiz()}" 
+					rollOverEffect="{rollOverEffect}" 
+					rollOutEffect="{rollOutEffect}" 
+					mouseOver="{iconMoveDown(btNext)}" 
+					mouseOut="{iconMoveUp(btNext)}"
+					mouseDown="{iconMD(btNext)}" 
+					mouseUp="{iconMU(btNext)}"
+				/>
+			</mx:AddChild>
+			<mx:RemoveChild target="{btAddPlayer}"/>
+			<mx:RemoveChild target="{btPlay}"/>
+			<mx:AddChild position="lastChild">
+				<mx:Image x="67" y="323" source="assets/botvoltar.png"
+            		buttonMode="true" 
+            		click="{currentState=''}" 
+            		rollOverEffect="{rollOverEffect}" 
+            		rollOutEffect="{rollOutEffect}" 
+            		mouseOver="{iconMoveDown(btBack)}" 
+            		mouseOut="{iconMoveUp(btBack)}"
+            		mouseDown="{iconMD(btBack)}" 
+            		mouseUp="{iconMU(btBack)}"
+			    />
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Image x="151" y="500" source="assets/jogar.png"
+					id="btBegin"
+					buttonMode="true" 
+					click="{showQuiz()}" 
+					rollOverEffect="{rollOverEffect}" 
+					rollOutEffect="{rollOutEffect}" 
+					mouseOver="{iconMoveDown(btBegin)}" 
+					mouseOut="{iconMoveUp(btBegin)}"
+					mouseDown="{iconMD(btBegin)}" 
+					mouseUp="{iconMU(btBegin)}"
+				/>
+			</mx:AddChild>
+			
+			
+		</mx:State>
+		<mx:State name="doLogin">
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="296.5" y="311" width="250" id="tiEmail"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="294.5" y="343" width="250" id="tiPassword"  displayAsPassword="true"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="228.5" y="310" text="E-Mail *" fontWeight="bold" color="#396CB0"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="228.5" y="342" text="Senha *" fontWeight="bold" color="#396CB0"/>
+			</mx:AddChild>
+			<mx:RemoveChild target="{taRules}"/>
+			<mx:AddChild relativeTo="{tiEmail}" position="before">
+				<mx:Image x="242" y="440" source="assets/jogar.png" 
+					id="btLogin"
+					buttonMode="true" 
+					click="{sendLogin()}" 
+					rollOverEffect="{rollOverEffect}" 
+					rollOutEffect="{rollOutEffect}" 
+					mouseOver="{iconMoveDown(btLogin)}" 
+					mouseOut="{iconMoveUp(btLogin)}"
+					mouseDown="{iconMD(btLogin)}" 
+					mouseUp="{iconMU(btLogin)}"
+				/>
+			</mx:AddChild>
+			<mx:SetProperty target="{image3}" name="x" value="286"/>
+			<mx:RemoveChild target="{btAddPlayer}"/>
+			<mx:RemoveChild target="{btPlay}"/>
+		</mx:State>
+	</mx:states>
+		
+	<mx:Image x="10" y="10" source="assets/titulo.png" id="image1"/>
+	<mx:Image x="11" y="137" source="assets/celular.png" id="image2"/>
+	<mx:TextArea x="150.5" y="200" width="478" height="297" fontWeight="bold" editable="false" color="#FFFFFF" backgroundColor="#24485B" id="taRules" creationComplete="{loadRules();}">
+		<mx:text>REGULAMENTO</mx:text>
+	</mx:TextArea>
+	<mx:Image x="371" y="0" source="assets/4igreja.png" id="image3"/>
+	<mx:Image x="66" y="324" id="btBack" source="assets/botvoltar.png"
+		buttonMode="true" 
+		click="{currentState=''}" 
+		rollOverEffect="{rollOverEffect}" 
+		rollOutEffect="{rollOutEffect}" 
+		mouseOver="{iconMoveDown(btBack)}" 
+		mouseOut="{iconMoveUp(btBack)}"
+		mouseDown="{iconMD(btBack)}" 
+		mouseUp="{iconMU(btBack)}"
+	/>
+	<mx:Image x="471" y="503" source="assets/jogarcinza.png" id="btPlay"
+		buttonMode="true" 
+		click="{currentState='doLogin'}" 
+		rollOverEffect="{rollOverEffect}" 
+		rollOutEffect="{rollOutEffect}" 
+		mouseOver="{iconMoveDown(btPlay)}" 
+		mouseOut="{iconMoveUp(btPlay)}"
+		mouseDown="{iconMD(btPlay)}" 
+		mouseUp="{iconMU(btPlay)}"
+	/>
+	<mx:Image x="151" y="503" source="assets/cadascinza.png" id="btAddPlayer"
+		buttonMode="true" 
+		click="{currentState='newUser'}"
+		rollOverEffect="{rollOverEffect}" 
+		rollOutEffect="{rollOutEffect}" 
+		mouseOver="{iconMoveDown(btAddPlayer)}" 
+		mouseOut="{iconMoveUp(btAddPlayer)}"
+		mouseDown="{iconMD(btAddPlayer)}" 
+		mouseUp="{iconMU(btAddPlayer)}"
+	/>
+
+</mx:Application>

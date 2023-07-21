@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	width="400" 
+	height="300" 
+	showCloseButton="true"
+	close="{PopUpManager.removePopUp(this)}">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+
+//			private function removeAlert():void {
+//				this.visible=false;
+//			}
+			
+//			private function showCanvas():void {
+//				var newObj:UIComponent = UIComponent( new Canvas );
+//				newObj["width"] = parentApplication.width;
+//				newObj["height"] = parentApplication.height;
+//				newObj["x"] = 0;
+//				newObj["y"] = 0;
+//				
+//				parentApplication.addChild(newObj);
+//				
+//				var tw:IFlexDisplayObject = PopUpManager.createPopUp(parentApplication,myAlert,true);
+//			}
+		]]>
+	</mx:Script>
+
+	<mx:Button x="305" y="228" label="Fechar" id="btClose"  click="{removeAlert()}"/>
+	<mx:TextArea x="10" y="10" width="360" height="210" id="msg"/>
+	
+</mx:TitleWindow>
